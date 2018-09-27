@@ -2,8 +2,8 @@ Analysis of Drug Efficacy via 2-by-2 Tables
 ===========================================
 
 This is a one-off repository to deliver a Python script to the world.
-As such, I took the repository name GitHub suggested.  :grinning:
-:octocat:
+As such, I took the repository name GitHub :octocat: suggested.
+:grinning:
 
 The program, `efficacy_2by2_analysis.py`, is a Python 3 program that
 selects data from a SQLite DB, builds a 2-by-2 table from it, computes
@@ -72,14 +72,16 @@ in the DB, not just the table of drugs.
 Here's an example query that defines efficacy as 2 or more drug records
 for a (yet to be determined) drug:
 
-    select person_id
-    from (
-        select person_id, count(*) as n_drug
-        from drug_exposure
-        where drug_concept_id is ?
-        group by person_id
-        having n_drug >= 2
-    );
+```sql
+select person_id
+from (
+    select person_id, count(*) as n_drug
+    from drug_exposure
+    where drug_concept_id is ?
+    group by person_id
+    having n_drug >= 2
+);
+```
 
 
 ### Options ###
@@ -90,7 +92,7 @@ The following content provides an example of what such a file might
 contain.  See the documentation of `default_env` for descriptions of
 individual options.
 
-```
+```python
 # Options for analysis A-12345
 drug_table_name = 'rxs'
 pseudocount = 0.25
