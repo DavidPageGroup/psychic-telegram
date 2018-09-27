@@ -5,7 +5,7 @@
 # under the MIT License.  See `LICENSE` or
 # https://choosealicense.com/licenses/mit/ for details.
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 
 import itertools as itools
@@ -108,14 +108,27 @@ def query_db_to_build_2by2_table(
     return table
 
 
-def print_table(drug1_id, drug2_id, table, file=sys.stdout):
+def print_table(
+        drug1_id,
+        drug2_id,
+        table,
+        drug1_label='trt',
+        drug2_label='ctrl',
+        file=sys.stdout,
+):
     header = ('Effective', 'Yes', 'No', 'Totals')
-    row_fmt_str = ' {2:<{0}} | {3:<{1}} | {4:<{1}} | {5:<{1}} '
+    row_fmt_str = ' {2:>{0}} | {3:<{1}} | {4:<{1}} | {5:<{1}} '
     row_fmt_num = ' {2:>{0}} | {3:>{1}.1f} | {4:>{1}.1f} | {5:>{1}.1f} '
     drug1_id_str = str(drug1_id)
     drug2_id_str = str(drug2_id)
     label_width = max(
-        len(header[0]), len(drug1_id_str), len(drug2_id_str))
+        len(header[0]),
+        len(drug1_label) + 2 + len(drug1_id_str),
+        len(drug2_label) + 2 + len(drug2_id_str))
+    drug1_id_str = drug1_label + '{1:>{0}}'.format(
+        label_width - len(drug1_label), drug1_id_str)
+    drug2_id_str = drug2_label + '{1:>{0}}'.format(
+        label_width - len(drug2_label), drug2_id_str)
     table_data = table.table_3x3()
     max_cell = max(itools.chain.from_iterable(table_data))
     cell_width = max(map(len, (*header[1:], '{:.1f}'.format(max_cell))))
